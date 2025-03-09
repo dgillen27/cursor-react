@@ -1,86 +1,89 @@
-import { useMutation } from '@apollo/client';
-import { Box, Button, TextField } from '@mui/material';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { CREATE_USER } from '~/shared/mutations';
-
-interface FormData {
-  email: string;
-  name: string;
-}
+import { Container, Grid, Typography, Box } from '@mui/material';
+import {
+  Memory,
+  Speed,
+  CloudQueue,
+  Storage,
+  Security,
+  Code,
+} from '@mui/icons-material';
+import { motion } from 'framer-motion';
+import MetricCard from './components/MetricCard';
+import ActivityChart from './components/ActivityChart';
+import LogoutButton from '../auth/components/LogoutButton';
 
 const Home = () => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      email: '',
-      name: '',
+  const metrics = [
+    {
+      title: 'CPU Usage',
+      value: '67%',
+      icon: <Memory fontSize="large" />,
+      color: '#2196f3',
     },
-  });
-
-  const [createUser] = useMutation(CREATE_USER);
-
-  const onSubmit: SubmitHandler<FormData> = async (formData) => {
-    if (!formData.email) {
-      return;
-    }
-
-    const { data } = await createUser({
-      variables: {
-        input: {
-          name: formData.name,
-          email: formData.email,
-        },
-      },
-    });
-
-    console.log(data);
-  };
+    {
+      title: 'Memory Load',
+      value: '5.2 GB',
+      icon: <Storage fontSize="large" />,
+      color: '#4caf50',
+    },
+    {
+      title: 'Network Speed',
+      value: '850 Mb/s',
+      icon: <Speed fontSize="large" />,
+      color: '#ff9800',
+    },
+    {
+      title: 'Cloud Storage',
+      value: '1.2 TB',
+      icon: <CloudQueue fontSize="large" />,
+      color: '#9c27b0',
+    },
+    {
+      title: 'Active Services',
+      value: '23',
+      icon: <Code fontSize="large" />,
+      color: '#f44336',
+    },
+    {
+      title: 'Security Status',
+      value: 'Protected',
+      icon: <Security fontSize="large" />,
+      color: '#009688',
+    },
+  ];
 
   return (
-    <Box padding="16px">
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        display="flex"
-        flexDirection="column"
-        maxWidth="600px"
-        gap="16px"
-      >
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              label="Name"
-              aria-invalid={errors.name ? 'true' : 'false'}
-              {...field}
-            />
-          )}
-        />
-        <Controller
-          name="email"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <TextField
-              label="Email"
-              aria-invalid={errors.email ? 'true' : 'false'}
-              error={Boolean(errors.email)}
-              required
-              {...field}
-            />
-          )}
-        />
-        <Button type="submit" variant="contained">
-          Submit
-        </Button>
+    <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+      <Box sx={{ position: 'relative' }}>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Typography variant="h4" gutterBottom>
+            System Dashboard
+          </Typography>
+        </motion.div>
+        <LogoutButton />
       </Box>
-      <Link to="/user/1">User 1</Link>
-    </Box>
+
+      <Grid container spacing={3}>
+        {metrics.map((metric, index) => (
+          <Grid item xs={12} sm={6} md={4} key={metric.title}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+            >
+              <MetricCard {...metric} />
+            </motion.div>
+          </Grid>
+        ))}
+        <Grid item xs={12}>
+          <ActivityChart />
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 

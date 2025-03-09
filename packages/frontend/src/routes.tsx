@@ -1,6 +1,7 @@
 import type { RouteObject } from 'react-router-dom';
 import ErrorPage from '~/shared/components/ErrorPage';
 import LoginPage from '~/modules/auth/LoginPage';
+import RegisterPage from '~/modules/auth/RegisterPage';
 import Profile from '~/modules/profile/Profile';
 import Home from '~/modules/home/Home';
 import NotFound from '~/shared/components/NotFound';
@@ -8,11 +9,17 @@ import Layout from './shared/components/Layout';
 
 const routes: RouteObject[] = [
   {
-    path: '/',
+    path: '/login',
     element: <LoginPage />,
     errorElement: <ErrorPage />,
   },
   {
+    path: '/register',
+    element: <RegisterPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: '/',
     element: <Layout />,
     children: [
       {

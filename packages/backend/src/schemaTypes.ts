@@ -6,6 +6,8 @@ const stringSchema = z.string();
 const dateSchema = z.date();
 
 export * from './schemaModules/user';
+export * from './schemaModules/auth/objectTypes.authSchema';
+export * from './schemaModules/auth/mutations.authSchema';
 
 export const Query = objectType({
   name: 'Query',
