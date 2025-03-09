@@ -29,6 +29,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  LoginInput: { // input type
+    email: string; // String!
+    password: string; // String!
+  }
   UserInput: { // input type
     email: string; // String!
     name?: string | null; // String
@@ -48,12 +52,23 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
+  LogoutResponse: { // root type
+    message?: string | null; // String
+    success: boolean; // Boolean!
+  }
   Mutation: {};
   Query: {};
   User: { // root type
+    createdAt: NexusGenScalars['Date']; // Date!
     email: string; // String!
     id: number; // Int!
     name?: string | null; // String
+    passwordHash: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
   }
 }
 
@@ -68,30 +83,58 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
+  LogoutResponse: { // field return type
+    message: string | null; // String
+    success: boolean; // Boolean!
+  }
   Mutation: { // field return type
     createUser: NexusGenRootTypes['User']; // User!
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    logout: NexusGenRootTypes['LogoutResponse']; // LogoutResponse!
+    register: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
   Query: { // field return type
     user: NexusGenRootTypes['User'] | null; // User
   }
   User: { // field return type
+    createdAt: NexusGenScalars['Date']; // Date!
     email: string; // String!
     id: number; // Int!
     name: string | null; // String
+    passwordHash: string; // String!
+    updatedAt: NexusGenScalars['Date']; // Date!
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
+  LogoutResponse: { // field return type name
+    message: 'String'
+    success: 'Boolean'
+  }
   Mutation: { // field return type name
     createUser: 'User'
+    login: 'AuthPayload'
+    logout: 'LogoutResponse'
+    register: 'AuthPayload'
   }
   Query: { // field return type name
     user: 'User'
   }
   User: { // field return type name
+    createdAt: 'Date'
     email: 'String'
     id: 'Int'
     name: 'String'
+    passwordHash: 'String'
+    updatedAt: 'Date'
   }
 }
 
@@ -99,6 +142,12 @@ export interface NexusGenArgTypes {
   Mutation: {
     createUser: { // args
       input: NexusGenInputs['UserInput']; // UserInput!
+    }
+    login: { // args
+      input: NexusGenInputs['LoginInput']; // LoginInput!
+    }
+    register: { // args
+      input: NexusGenInputs['LoginInput']; // LoginInput!
     }
   }
   Query: {

@@ -2,11 +2,29 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
 """Date custom scalar type"""
 scalar Date
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type LogoutResponse {
+  message: String
+  success: Boolean!
+}
+
 type Mutation {
   createUser(input: UserInput!): User!
+  login(input: LoginInput!): AuthPayload!
+  logout: LogoutResponse!
+  register(input: LoginInput!): AuthPayload!
 }
 
 type Query {
@@ -14,9 +32,14 @@ type Query {
 }
 
 type User {
+  createdAt: Date!
   email: String!
   id: Int!
   name: String
+
+  """Hashed password for the user"""
+  passwordHash: String!
+  updatedAt: Date!
 }
 
 input UserInput {

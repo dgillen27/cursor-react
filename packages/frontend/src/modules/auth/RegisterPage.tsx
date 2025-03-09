@@ -15,13 +15,13 @@ import {
 } from '@mui/material';
 import type { LoginFormData } from '~/modules/auth/types';
 import { loginSchema } from '~/modules/auth/types';
-import { LOGIN_MUTATION } from './graphql/mutations';
+import { REGISTER_MUTATION } from './graphql/mutations';
 import {
   pageTransition,
   formControlTransition,
 } from '~/shared/utils/animations';
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
@@ -33,9 +33,9 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const [login, { loading }] = useMutation(LOGIN_MUTATION, {
+  const [registerUser, { loading }] = useMutation(REGISTER_MUTATION, {
     onCompleted: (data) => {
-      localStorage.setItem('token', data.login.token);
+      localStorage.setItem('token', data.register.token);
       navigate('/home');
     },
     onError: (error) => {
@@ -46,7 +46,7 @@ const LoginPage = () => {
   const onSubmit = async (data: LoginFormData) => {
     setError(null);
     try {
-      await login({
+      await registerUser({
         variables: {
           input: {
             email: data.email,
@@ -76,7 +76,7 @@ const LoginPage = () => {
           }}
         >
           <Typography component="h1" variant="h4" sx={{ mb: 3 }}>
-            Welcome Back
+            Create Account
           </Typography>
 
           <Box
@@ -117,7 +117,7 @@ const LoginPage = () => {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 error={!!errors.password}
                 helperText={errors.password?.message}
                 {...register('password')}
@@ -131,12 +131,12 @@ const LoginPage = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={loading}
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? 'Creating account...' : 'Create Account'}
             </Button>
 
             <Box sx={{ textAlign: 'center' }}>
-              <Link component={RouterLink} to="/register" variant="body2">
-                Don&apos;t have an account? Sign Up
+              <Link component={RouterLink} to="/login" variant="body2">
+                Already have an account? Sign In
               </Link>
             </Box>
           </Box>
@@ -146,4 +146,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
