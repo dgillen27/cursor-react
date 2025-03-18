@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
+import { Box, IconButton } from '@mui/material';
 
 const NavContainer = styled.nav`
   background: white;
@@ -76,6 +77,7 @@ const Navbar: React.FC = () => {
     <NavContainer>
       <NavContent>
         <Logo to="/home">facebook</Logo>
+        <Box></Box>
 
         <NavLinks>
           <NavLink to="/home" active={location.pathname === '/home'}>
