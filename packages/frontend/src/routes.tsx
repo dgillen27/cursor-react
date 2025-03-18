@@ -6,6 +6,11 @@ import Profile from '~/modules/profile/Profile';
 import Home from '~/modules/home/Home';
 import NotFound from '~/shared/components/NotFound';
 import Layout from './shared/components/Layout';
+import HomePage from '~/modules/social/HomePage';
+import FriendsPage from '~/modules/social/FriendsPage';
+import GroupsPage from '~/modules/social/GroupsPage';
+import PhotosPage from '~/modules/social/PhotosPage';
+import SettingsPage from '~/modules/settings/SettingsPage';
 
 const routes: RouteObject[] = [
   {
@@ -29,6 +34,26 @@ const routes: RouteObject[] = [
       {
         path: '/user/:userId',
         element: <Profile />,
+      },
+      {
+        path: '/social',
+        element: <HomePage />,
+      },
+      {
+        path: '/friends',
+        element: <FriendsPage />,
+      },
+      {
+        path: '/groups',
+        element: <GroupsPage />,
+      },
+      {
+        path: '/photos',
+        element: <PhotosPage />,
+      },
+      {
+        path: '/settings',
+        element: <SettingsPage />,
       },
     ],
   },
