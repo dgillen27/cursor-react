@@ -22,5 +22,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run ESLint
-        run: pnpm lint
+      - name: Run ESLint in Frontend
+        run: pnpm --filter frontend lint
+
+      - name: Run ESLint in Backend
+        run: pnpm --filter backend lint
