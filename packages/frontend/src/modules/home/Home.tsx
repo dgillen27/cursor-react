@@ -1,4 +1,12 @@
-import { Container, Grid, Typography, Box } from '@mui/material';
+import {
+  Container,
+  Grid,
+  Typography,
+  Box,
+  Card,
+  CardContent,
+  CardActionArea,
+} from '@mui/material';
 import {
   Memory,
   Speed,
@@ -6,13 +14,21 @@ import {
   Storage,
   Security,
   Code,
+  People,
+  Group,
+  Photo,
+  Settings,
+  Home as HomeIcon,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import MetricCard from './components/MetricCard';
 import ActivityChart from './components/ActivityChart';
 import LogoutButton from '../auth/components/LogoutButton';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const metrics = [
     {
       title: 'CPU Usage',
@@ -52,6 +68,39 @@ const Home = () => {
     },
   ];
 
+  const navigationCards = [
+    {
+      title: 'Social Feed',
+      path: '/social',
+      icon: <HomeIcon fontSize="large" />,
+      color: '#2196f3',
+    },
+    {
+      title: 'Friends',
+      path: '/friends',
+      icon: <People fontSize="large" />,
+      color: '#4caf50',
+    },
+    {
+      title: 'Groups',
+      path: '/groups',
+      icon: <Group fontSize="large" />,
+      color: '#ff9800',
+    },
+    {
+      title: 'Photos',
+      path: '/photos',
+      icon: <Photo fontSize="large" />,
+      color: '#9c27b0',
+    },
+    {
+      title: 'Settings',
+      path: '/settings',
+      icon: <Settings fontSize="large" />,
+      color: '#009688',
+    },
+  ];
+
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       <Box sx={{ position: 'relative' }}>
@@ -82,6 +131,35 @@ const Home = () => {
         <Grid item xs={12}>
           <ActivityChart />
         </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
+            Navigation
+          </Typography>
+        </Grid>
+        {navigationCards.map((card, index) => (
+          <Grid item xs={12} sm={6} md={4} key={card.title}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+            >
+              <Card sx={{ height: '100%' }}>
+                <CardActionArea
+                  onClick={() => navigate(card.path)}
+                  sx={{ height: '100%' }}
+                >
+                  <CardContent>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <Box sx={{ color: card.color, mr: 2 }}>{card.icon}</Box>
+                      <Typography variant="h6">{card.title}</Typography>
+                    </Box>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </motion.div>
+          </Grid>
+        ))}
       </Grid>
     </Container>
   );
